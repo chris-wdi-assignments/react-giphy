@@ -1,6 +1,10 @@
 import React, {Component} from 'react';
 import Search from '../components/Search.js';
 import Results from '../components/Results.js';
+import $ from 'jquery-ajax';
+import api from '../apikey.js';
+console.log(api);
+const apikey = api.key;
 
 const hardCodedResults = {
   "data": [
@@ -55,10 +59,19 @@ class SearchContainer extends Component {
   onSubmit (e) {
     e.preventDefault();
     console.log('submitting', this.state.query);
-    this.setState({
-      query: '',
-      results: hardCodedResults,
-      hasSubmittedSearch: true
+    $.ajax({
+      method: "GET",
+      url: "https://api.giphy.com/v1/gifs/search",
+      data: {
+        q: this.state.query,
+        api_key: apikey
+      }
+    }).then((results) => {
+      this.setState({
+        query: '',
+        results: results,
+        hasSubmittedSearch: true
+      });
     });
   }
   render () {
