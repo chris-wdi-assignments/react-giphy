@@ -43,8 +43,8 @@ class SearchContainer extends Component {
     } else {
       return (
         <Search
-          onChangeHandler={this.onChange.bind(this)}
-          onSubmitHandler={this.onSubmit.bind(this)}
+          onChangeHandler={e => this.onChange(e)}
+          onSubmitHandler={e => this.onSubmit(e)}
           query={this.state.query} />
       )
     }
