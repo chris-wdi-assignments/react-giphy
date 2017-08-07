@@ -14,6 +14,22 @@ class SearchContainer extends Component {
       results: []
     };
   }
+  renderGifs (results) {
+    this.setState({
+      query: '',
+      results: results,
+      hasSubmittedSearch: true
+    });
+  }
+  componentDidMount () {
+    const url = 'https://api.giphy.com';  // the site
+    const endpoint = '/v1/gifs/search'; // the search endpoint
+    const query = "?q=bob dylan&api_key=" + apikey; // our query
+
+    fetch(url + endpoint + query) // send GET req to the endpoint, w/query
+      .then(res => res.json())  // transform response to JSON blob
+      .then(res => this.renderGifs(res)); // pass on to rendering method
+  }
   onChange (e) {
     this.setState({ query: e.target.value });
   }
@@ -27,13 +43,7 @@ class SearchContainer extends Component {
         q: this.state.query,
         api_key: apikey
       }
-    }).then((results) => {
-      this.setState({
-        query: '',
-        results: results,
-        hasSubmittedSearch: true
-      });
-    });
+    }).then(this.renderGifs);
   }
   render () {
     if (this.state.hasSubmittedSearch) {
